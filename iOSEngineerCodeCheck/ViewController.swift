@@ -37,13 +37,17 @@ class ViewController: UITableViewController, UISearchBarDelegate {
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        
-        word = searchBar.text!
+        guard let searchBarText = searchBar.text else{
+            return
+        }
+        word = searchBarText
         
         if word.count != 0 {
             url = "https://api.github.com/search/repositories?q=\(word!)"
-            task = URLSession.shared.dataTask(with: URL(string: url)!) { (data, res, err) in
-                if let obj = try! JSONSerialization.jsonObject(with: data!) as? [String: Any] {
+            guard let githubUrl = URL(string: url) else{return}
+            task = URLSession.shared.dataTask(with:githubUrl) { (data, res, err) in
+                guard let taskData = data else{return}
+                if let obj = try! JSONSerialization.jsonObject(with: taskData) as? [String: Any] {
                     if let items = obj["items"] as? [[String: Any]] {
                     self.repo = items
                         DispatchQueue.main.async {
