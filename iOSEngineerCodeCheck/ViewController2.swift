@@ -10,46 +10,46 @@ import UIKit
 
 class ViewController2: UIViewController {
     
-    @IBOutlet weak var ImgView: UIImageView!
+    @IBOutlet weak var imageView: UIImageView!
     
-    @IBOutlet weak var TtlLbl: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
     
-    @IBOutlet weak var LangLbl: UILabel!
+    @IBOutlet weak var languageLabel: UILabel!
     
-    @IBOutlet weak var StrsLbl: UILabel!
-    @IBOutlet weak var WchsLbl: UILabel!
-    @IBOutlet weak var FrksLbl: UILabel!
-    @IBOutlet weak var IsssLbl: UILabel!
+    @IBOutlet weak var starsLabel: UILabel!
+    @IBOutlet weak var watcherLabel: UILabel!
+    @IBOutlet weak var forksLabel: UILabel!
+    @IBOutlet weak var issueLabel: UILabel!
     
-    var vc1: ViewController?
+    var mainViewController: ViewController?
         
     override func viewDidLoad() {
         super.viewDidLoad()
-        guard let VC1 = vc1 else{return}
-        let repo = VC1.repo[VC1.idx!]
+        guard let mainVC = mainViewController else{return}
+        let repository = mainVC.repositories[mainVC.index ?? 0]
         
-        LangLbl.text = "Written in \(repo["language"] as? String ?? "")"
-        StrsLbl.text = "\(repo["stargazers_count"] as? Int ?? 0) stars"
-        WchsLbl.text = "\(repo["wachers_count"] as? Int ?? 0) watchers"
-        FrksLbl.text = "\(repo["forks_count"] as? Int ?? 0) forks"
-        IsssLbl.text = "\(repo["open_issues_count"] as? Int ?? 0) open issues"
-        getImage()
+        languageLabel.text = "Written in \(repository["language"] as? String ?? "")"
+        starsLabel.text = "\(repository["stargazers_count"] as? Int ?? 0) stars"
+        watcherLabel.text = "\(repository["wachers_count"] as? Int ?? 0) watchers"
+        forksLabel.text = "\(repository["forks_count"] as? Int ?? 0) forks"
+        issueLabel.text = "\(repository["open_issues_count"] as? Int ?? 0) open issues"
+        getIconImage()
         
     }
     
-    func getImage(){
-        guard let VC1 = vc1 else{return}
-        let repo = VC1.repo[VC1.idx!]
+    func getIconImage(){
+        guard let VC1 = mainViewController else{return}
+        let searchedRepository = VC1.repositories[VC1.index ?? 0]
         
-        TtlLbl.text = repo["full_name"] as? String
+        titleLabel.text = searchedRepository["full_name"] as? String
         
-        if let owner = repo["owner"] as? [String: Any] {
-            if let imgURL = owner["avatar_url"] as? String {
-                guard let imageUrl = URL(string: imgURL) else{return}
-                URLSession.shared.dataTask(with:imageUrl) { (data, res, err) in
-                    guard let img = UIImage(data: data!)else{return}
+        if let owner = searchedRepository["owner"] as? [String: Any] {
+            if let imageURL = owner["avatar_url"] as? String {
+                guard let iconImageURL = URL(string: imageURL) else{return}
+                URLSession.shared.dataTask(with:iconImageURL) { (data, res, err) in
+                    guard let iconImage = UIImage(data: data!)else{return}
                     DispatchQueue.main.async {
-                        self.ImgView.image = img
+                        self.imageView.image = iconImage
                     }
                 }.resume()
             }
