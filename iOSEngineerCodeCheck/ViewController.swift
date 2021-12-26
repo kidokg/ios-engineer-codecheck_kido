@@ -40,24 +40,27 @@ class ViewController: UITableViewController, UISearchBarDelegate {
         guard let searchBarText = searchBar.text else{return}
         searchedWord = searchBarText
         
-        if searchedWord?.count != 0 {
-            repositoryURL = "https://api.github.com/search/repositories?q=\(searchedWord!)"
-            guard let githubURL = URL(string: repositoryURL!) else{return}
-            URLSessionTask = URLSession.shared.dataTask(with:githubURL) { (data, res, err) in
-                guard let taskData = data else{return}
-                if let object = try! JSONSerialization.jsonObject(with: taskData) as? [String: Any] {
-                    if let items = object["items"] as? [[String: Any]] {
-                    self.repositories = items
-                        DispatchQueue.main.async {
-                            self.tableView.reloadData()
-                        }
-                    }
+        if searchedWord?.count == 0 {return}
+        
+        repositoryURL = "https://api.github.com/search/repositories?q=\(searchedWord!)"
+        guard let githubURL = URL(string: repositoryURL!) else{return}
+        URLSessionTask = URLSession.shared.dataTask(with:githubURL) { (data, res, err) in
+            guard let taskData = data else{return}
+            if let object = try! JSONSerialization.jsonObject(with: taskData) as? [String: Any],
+               let items = object["items"] as? [[String: Any]]{
+                     self.repositories = items
+                     self.reloadTableView()
                 }
-            }
+        }
         // これ呼ばなきゃリストが更新されません
         URLSessionTask?.resume()
+    }
+    
+    func reloadTableView(){
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
         }
-        
+
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
