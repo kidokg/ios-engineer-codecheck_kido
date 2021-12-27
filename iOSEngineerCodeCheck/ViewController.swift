@@ -47,10 +47,10 @@ class ViewController: UITableViewController, UISearchBarDelegate {
         URLSessionTask = URLSession.shared.dataTask(with:githubURL) { (data, res, err) in
             guard let taskData = data else{return}
             if let object = try! JSONSerialization.jsonObject(with: taskData) as? [String: Any],
-                let items = object["items"] as? [[String: Any]]{
-                     self.repositories = items
-                     self.reloadTableView()
-                }
+            let items = object["items"] as? [[String: Any]]{
+                self.repositories = items
+                self.reloadTableView()
+            }
         }
         // リストを更新する。
         URLSessionTask?.resume()
@@ -67,7 +67,7 @@ class ViewController: UITableViewController, UISearchBarDelegate {
         
         if segue.identifier == "Detail"{
             if let nextView = segue.destination as? ViewController2 {
-            nextView.mainViewController = self
+                nextView.mainViewController = self
             }
         }
     }
