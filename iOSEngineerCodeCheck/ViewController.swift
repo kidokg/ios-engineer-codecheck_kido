@@ -9,9 +9,10 @@
 import UIKit
 
 class ViewController: UITableViewController, UISearchBarDelegate {
-
-    @IBOutlet weak var searchBar: UISearchBar!
     
+    @IBOutlet var firstPresentor: FirstPresentor!
+        
+    @IBOutlet weak var searchBar: UISearchBar!
     var repositories: [[String: Any]]=[]
     
     var URLSessionTask: URLSessionTask?
@@ -24,6 +25,8 @@ class ViewController: UITableViewController, UISearchBarDelegate {
         // Do any additional setup after loading the view.
         searchBar.text = "GitHubのリポジトリを検索できるよー"
         searchBar.delegate = self
+        self.firstPresentor.tableView.delegate = self
+        self.firstPresentor.tableView.dataSource = self
     }
     
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
@@ -33,7 +36,8 @@ class ViewController: UITableViewController, UISearchBarDelegate {
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        URLSessionTask?.cancel()
+        //URLSessionTask?.cancel()
+        firstPresentor.URLSessionTask?.cancel()
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -41,27 +45,17 @@ class ViewController: UITableViewController, UISearchBarDelegate {
         searchedWord = searchBarText
         
         if searchedWord?.count == 0 {return}
-        
-        repositoryURL = "https://api.github.com/search/repositories?q=\(searchedWord!)"
-        guard let githubURL = URL(string: repositoryURL!) else{return}
-        URLSessionTask = URLSession.shared.dataTask(with:githubURL) { (data, res, err) in
-            guard let taskData = data else{return}
-            if let object = try! JSONSerialization.jsonObject(with: taskData) as? [String: Any],
-            let items = object["items"] as? [[String: Any]]{
-                self.repositories = items
-                self.reloadTableView()
-            }
-        }
+        firstPresentor.searchRepository(searchedWord: searchedWord ?? "non")
+        repositories = firstPresentor.repositories
+        reloadTableView()
         // リストを更新する。
-        URLSessionTask?.resume()
+        //URLSessionTask?.resume()
+        firstPresentor.URLSessionTask?.resume()
     }
-    
     func reloadTableView(){
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
-
+            self.firstPresentor.tableView.reloadData()
     }
+
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
@@ -73,13 +67,14 @@ class ViewController: UITableViewController, UISearchBarDelegate {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return repositories.count
+    
+        return firstPresentor.repositories.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = UITableViewCell()
-        let repository = repositories[indexPath.row]
+        let repository = firstPresentor.repositories[indexPath.row]
         cell.textLabel?.text = repository["full_name"] as? String ?? ""
         cell.detailTextLabel?.text = repository["language"] as? String ?? ""
         cell.tag = indexPath.row

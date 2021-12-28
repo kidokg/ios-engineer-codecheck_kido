@@ -10,16 +10,18 @@ import UIKit
 
 class ViewController2: UIViewController {
     
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet var secondPresentor: secondPresentor!
     
-    @IBOutlet weak var titleLabel: UILabel!
+
     
     @IBOutlet weak var languageLabel: UILabel!
+    @IBOutlet weak var imageView: UIImageView!
     
     @IBOutlet weak var starsLabel: UILabel!
     @IBOutlet weak var watcherLabel: UILabel!
     @IBOutlet weak var forksLabel: UILabel!
     @IBOutlet weak var issueLabel: UILabel!
+    var IconImage : UIImage?
     
     var mainViewController: ViewController?
         
@@ -33,11 +35,16 @@ class ViewController2: UIViewController {
         watcherLabel.text = "\(repository["wachers_count"] as? Int ?? 0) watchers"
         forksLabel.text = "\(repository["forks_count"] as? Int ?? 0) forks"
         issueLabel.text = "\(repository["open_issues_count"] as? Int ?? 0) open issues"
-        getIconImage()
+        secondPresentor.getIconImage(main: mainViewController!)
+        IconImage = secondPresentor.Icon
+    
+        self.imageView.image = IconImage
         
+        
+
     }
     
-    func getIconImage(){
+  /*  func getIconImage(){
         guard let VC1 = mainViewController else{return}
         let searchedRepository = VC1.repositories[VC1.index ?? 0]
         
@@ -51,13 +58,13 @@ class ViewController2: UIViewController {
                     self.setIconImage(image: iconImage)
                 }.resume()
             }
-    }
+    }*/
     
 
 
-    func setIconImage(image : UIImage){
+    /*func setIconImage(image : UIImage){
         DispatchQueue.main.async {
         self.imageView.image = image
         }
-    }
+    }*/
 }

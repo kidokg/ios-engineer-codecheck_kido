@@ -48,17 +48,23 @@
                             </tableViewCell>
                         </prototypes>
                         <connections>
-                            <outlet property="dataSource" destination="MOh-CZ-3ki" id="mX7-Ab-ERr"/>
-                            <outlet property="delegate" destination="MOh-CZ-3ki" id="A6Y-Dm-cjQ"/>
+                            <outlet property="dataSource" destination="MOh-CZ-3ki" id="bsq-KH-znk"/>
+                            <outlet property="delegate" destination="MOh-CZ-3ki" id="RtI-wq-GjO"/>
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Root View Controller" id="ktq-eC-ZBq"/>
                     <connections>
-                        <outlet property="searchBar" destination="6rq-CD-Hob" id="CBd-Pj-bkm"/>
+                        <outlet property="firstPresentor" destination="icl-D4-jsi" id="moq-Ph-9pN"/>
+                        <outlet property="searchBar" destination="6rq-CD-Hob" id="EYO-Ea-2Ih"/>
                         <segue destination="AHY-RL-7mG" kind="show" identifier="Detail" id="qqd-8W-4W1"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xer-fe-JeW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <customObject id="icl-D4-jsi" customClass="FirstPresentor" customModule="iOSEngineerCodeCheck">
+                    <connections>
+                        <outlet property="tableView" destination="Fpt-Ev-QNW" id="wfW-YJ-Oq9"/>
+                    </connections>
+                </customObject>
             </objects>
             <point key="canvasLocation" x="-498" y="137"/>
         </scene>
@@ -151,15 +157,20 @@
                     <navigationItem key="navigationItem" id="J6o-vL-S1z"/>
                     <connections>
                         <outlet property="forksLabel" destination="ZMv-4f-X2V" id="llV-vF-IG8"/>
-                        <outlet property="imageView" destination="Iim-eb-8Ad" id="pcR-fr-Ho0"/>
+                        <outlet property="imageView" destination="Iim-eb-8Ad" id="D98-SB-iwh"/>
                         <outlet property="issueLabel" destination="dzg-K8-h2L" id="Iql-rO-AhR"/>
                         <outlet property="languageLabel" destination="s3M-QO-Kom" id="tgU-v1-xep"/>
+                        <outlet property="secondPresentor" destination="Euf-8M-Lzb" id="uMX-E7-q3k"/>
                         <outlet property="starsLabel" destination="0WZ-UA-R8O" id="fs7-rj-ZfT"/>
-                        <outlet property="titleLabel" destination="4q1-pG-WSB" id="oSN-6m-lID"/>
                         <outlet property="watcherLabel" destination="lQC-lo-IqN" id="n0e-TQ-PVH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rj0-Ld-RTn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <customObject id="Euf-8M-Lzb" customClass="secondPresentor" customModule="iOSEngineerCodeCheck">
+                    <connections>
+                        <outlet property="titleLabel" destination="4q1-pG-WSB" id="E92-wD-YOX"/>
+                    </connections>
+                </customObject>
             </objects>
             <point key="canvasLocation" x="228.98550724637684" y="136.60714285714286"/>
         </scene>
